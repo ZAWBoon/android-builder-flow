@@ -3,8 +3,8 @@ name: Android Build
 on:
   push:
     branches:
-      - main   # يشتغل أول ما ترفع أي كود على الفرع main
-  workflow_dispatch:  # يسمحلك تشغله يدوي من تبويب Actions
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,4 +24,13 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: Make gradlew executable
-        run: chmod +x 
+        run: chmod +x ./gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
